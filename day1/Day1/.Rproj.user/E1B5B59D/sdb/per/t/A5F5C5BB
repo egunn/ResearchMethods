@@ -1,0 +1,18 @@
+{
+    "contents" : "r <-rivers\nr\nplot(r)\n\nhist(r)\nstr(r)\n\n# this is a comment\niris\ni <- iris\nstr(i)\nhead(i)\nsummary(i)\nplot(i)\n\n#accessing specific parts of the dataframe\n#ea variable has $ name: i$SepalWidth  \nhist(i$Sepal.Width)\n\n# returns value in [row#, column#]\n# can address variables by name, or by number in list. R starts with 1, not 0!\ni[1,1]\n\n#first row of all columns - leave columns unspecified\ni[1,]\n\n#statmethods.net - easy to use R manual (on BB)\n\n#subset data to extract small arrays from data\n#row 1-10\ni[1:10,]\ni[,2:3]\ni1 <- i[3,2:3]\n\n#install a package ggplot - use packages GUI, or import with\n#install.packages(\"ggplot2\")\n\n#load for each script you want to use it in.\nlibrary(ggplot2)\n\n#plot with ggplot - define variables to plot.\n#ggplot based on grammar of graphics - maps data to visual variables\n#systematic way of combining plot types.\nqplot(data=i,x=Sepal.Width, y=Petal.Width)\n\nqplot(data=i,x=Sepal.Width, y=Petal.Width, size=Sepal.Width)\n\n#alpha for transparency; I means to treat 0.3 as a literal value, \n#not relative to something else. Can now see when things are on top of each other\n#if you forget the I, it parses as a value and thinks it's a category of sorts\nqplot(data=i,x=Sepal.Width, y=Petal.Width, size=Sepal.Width, alpha=I(0.3))\n\n#understands that species value is categorical; uses non-hierarchical color scale automatically\nqplot(data=i,x=Sepal.Width, y=Petal.Width, size=Sepal.Width, alpha=I(0.3), color=Species)\n\n#qplot can get unwieldy\n#call data, identify aesthetics. Don't need I here, but won't break if you add it.\n#creates base layer of graphic; still need to specify geometry\n#can save all of this as a new variable to reuse, and chain as in Javascript\n#geometry uses the aesthetics to create a plot with a particular geometry\n#geometry may require additional components - find them from documentation\n#go through ggplot2 tutorial on BB \"One hour intro\"\n#can use other features (facets) in addition to geometry to create other functions (small multiples\nggplot(data=i,aes(x=Sepal.Width, y=Petal.Width, size=Sepal.Width, alpha=0.3, color=Species))+geom_point()\n\nggplot(data=i,aes(x=Sepal.Width, y=Petal.Width, size=Sepal.Width, alpha=0.3, color=Species))+geom_point() +facet_wrap(~Species)\n\n#another example - need to install library\n#lots of different packages\n#library(ggally)\n#ggpairs(i)\n\n\n#save a plot\np<-ggplot(data=i,aes(x=Sepal.Width, y=Petal.Width, size=Sepal.Width, alpha=0.3, color=Species))+geom_point()\nlibrary(plotly)\nggplotly(p)\n#press button with website and arrow in viewer to see as webpage.\n\n#shiny is an interface for building websites where you can control R from a website\n",
+    "created" : 1453755329438.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3936632973",
+    "id" : "A5F5C5BB",
+    "lastKnownWriteTime" : 1453758826,
+    "path" : "C:/Users/erica/Desktop/Research methods/R-projects/day1/Day1/day1script1.R",
+    "project_path" : "day1script1.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
