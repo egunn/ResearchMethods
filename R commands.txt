@@ -1,0 +1,70 @@
+sum(1,3,5)
+rep("yay!", times = 3)
+help(functionname)
+example(functionname) //prints examples of function usage
+list.files() //lists files in current directory
+source("scriptname.R")
+
+vector elements have to be of the same type! If you mix types, will auto-correct to a single mode 
+c(4,7,9) //short for combine - creates a new vector by combining variables
+5:9 //vector of numbers 5-9
+seq(5,9) //sequence of #s - can use other increments
+seq(5,9,0.5)
+
+can add new variables to a vector by calling an index that doesn't exist
+variable = 1,2,3
+variable[4] <- 4
+variable[c(2,3)]  //returns values in 2,3
+variable[c(2:4)]
+
+names(variable) <- ("a","b","c")  //set names for vector items
+variable["b"]  gives 2
+
+barplot(variable)  //draws barchart with variable contents
+names assigned as labels
+
+add/divide/multiply scalar to a vector, gets added to each element
+vector addition elementwise
+a==c returns true/false for equality of each pair of cells
+
+sin, sqrt, other functions also work elementwise
+
+plot takes 2 vectors as input
+plot(x,y)
+
+sum of vector with NA = NA
+sum(a, na.rm==TRUE) //removes NA values before summing
+
+matrix(0,3,4) //matrix of zeros 3 rows, 4 cols
+or, pass in a 12-item vector
+matrix(a,3,4)
+
+print(a) //prints matrix in single line
+
+reshape a vector to a matrix: vector <-1:8
+dim(vector) <- c(2,4)  //shapes vector into a 2x4 matrix
+
+vector[2,3]  //entry at row 2, col 3
+vector[,3]  //column 3
+vector[3,]  //row 3
+
+contour(matrix)  //returns contour map of data
+persp(matrix) //3D elevation map
+persp(matrix,expand=0.2) //adjusts scale value for y axis
+image(matrix)  //heat map
+
+
+getwd() //print working directory
+ls() //list objects in workspace
+setwd("path")   //use / or \\ instead of \ to access files 
+history()  //show last 15 commands
+savehistory(file="filename")	//save command history
+loadhistory(file="filename")	//load saved history
+save.image() //save workspace
+save(object list, file="filename.Rdata")	//save workspace object to wd
+q() //quit R
+
+
+
+
+
