@@ -1,0 +1,106 @@
+---
+title: "question"
+output: html_document
+---
+
+
+```{r include=FALSE}
+load("barchartquestion.RData")
+
+require(ggplot2)
+require(scales)
+require(reshape)
+```
+
+Hi Dietmar,
+
+I'm having a problem creating a bar chart with two ordered variables in ggplot2. I started by loading my data and libraries, and doing a bunch of manipulations to create a "toPlot" variable. (I'll include the full R script, but cleaned up the workspace to include only the data necessary for plotting).
+
+```{r, echo=FALSE}
+summary(toPlot)
+```
+
+I then melted the data into a format appropriate for plotting, and reordered the melted array using the factor column (this was necessary to make sure that the bars showed up in the right order):
+
+```{r}
+#melt into one column with two factors: landArea and agricArea
+toPlotMelt<-melt(toPlot,id.vars=c("Country.Name", "factor"), measure.vars=2:3, variable_name = "Area", na.rm = FALSE)
+
+#reorder melted array using factor column
+toPlotReordered <-reorder(toPlotMelt$Country.Name,toPlotMelt$factor)
+```
+
+I plotted the variables in the resulting array separately, to verify that they were correct after all of my manipulations (they were).
+
+```{r}
+#plot total land area, with all countries in order (confirmed correct)
+ggplot(data=toPlotMelt[1:50,], 
+       aes(x=toPlotReordered[1:50],
+           y=toPlotMelt$value[1:50],
+           fill=toPlotMelt$Area[1:50]))+
+      geom_bar(width=.5,stat="identity")+
+      coord_flip()+
+      labs(title="Total land area for 50 largest countries", 
+           x="Country", 
+           y = "Land area (sq. km)")+
+      scale_y_continuous(labels=comma)+ 
+      theme(axis.title.x = element_text(size=12),
+            axis.title.y = element_text(size=12), 
+            axis.text.x = element_text(size =10), 
+            axis.text.y = element_text(size =7),
+            plot.title=element_text(size=16))+
+      scale_fill_manual(values=c("#E69F00","#999999"), 
+            name="Land Type", 
+            breaks=c("X2013", "absAgricArea"),  
+            labels=c("Agricultural", "Total"))
+
+#plot agric land area, with all countries in order (confirmed correct)
+ggplot(data=toPlotMelt[51:100,], 
+      aes(x=toPlotReordered[1:50],
+           y=toPlotMelt$value[51:100],
+           fill=toPlotMelt$Area[51:100]))+
+      geom_bar(width=.5,stat="identity")+
+      coord_flip()+
+      labs(title="Agricultural land area for 50 largest countries", 
+           x="Country", 
+           y = "Land area (sq. km)")+
+      scale_y_continuous(labels=comma)+ 
+      theme(axis.title.x = element_text(size=12),
+           axis.title.y = element_text(size=12), 
+           axis.text.x = element_text(size =10), 
+           axis.text.y = element_text(size =7),
+           plot.title=element_text(size=16))+
+      scale_fill_manual(values=c("#E69F00","#999999"), 
+           name="Land Type", 
+           breaks=c("X2013", "absAgricArea"),  
+           labels=c("Agricultural", "Total"))
+
+```
+
+So far, so good. The problem comes when I try to combine both variables in one graph. Then, I end up with this:
+
+```{r fig.width=8.2}
+#plot both variables together, with all countries in order 
+ggplot(data=toPlotMelt, 
+       aes(x=toPlotReordered,
+           y=toPlotMelt$value,
+           fill=toPlotMelt$Area))+
+       geom_bar(width=.5,stat="identity")+
+       coord_flip()+
+       labs(title="Total and agricultural land area for 50 largest countries",
+            x="Country", 
+            y = "Land area (sq. km)")+
+       scale_y_continuous(labels=comma)+ 
+       theme(axis.title.x = element_text(size=12),
+             axis.title.y = element_text(size=12), 
+             axis.text.x = element_text(size =10), 
+             axis.text.y = element_text(size =7),
+             plot.title=element_text(size=16))+
+       scale_fill_manual(values=c("#E69F00","#999999"), 
+             name="Land Type", 
+             breaks=c("landArea", "agricArea"),  labels=c("Agricultural", "Total"))
+```
+
+If you compare the agricultural land areas plotted in this combined graph with the ones plotted separately above, you'll find that R has reordered the column according to decreasing agricultural land area value, rather than according to the country name/factor values. 
+
+I've reworked this 4 or 5 times at this point, and can't manage to get the second half of the data to obey the refactor, even though the first half seems fine. Looking at the toPlotMelt array itself, the factor values are in the right place. But for some reason, ggplot2 doesn't seem to be able to "hear" them. Any ideas?
